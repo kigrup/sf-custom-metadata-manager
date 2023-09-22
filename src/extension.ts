@@ -15,6 +15,12 @@ export function activate(context: vscode.ExtensionContext) {
 		semicolon: ';'
 	};
 
+	const standardColumns = [
+		'customMetadataType',
+		'apiName',
+		'label'
+	];
+
 	let disposableReadAllIntoCSV = vscode.commands.registerCommand('sf-custom-metadata-manager.readAllIntoCSV', async () => {
 		try {
 			// Read all the custom metadata records files
@@ -151,13 +157,6 @@ export function activate(context: vscode.ExtensionContext) {
 			});
 
 			vscode.window.showTextDocument(document);
-
-			/* fs.writeFileSync(filePath, content, 'utf8');
-			const openPath = vscode.Uri.file(filePath);
-			vscode.workspace.openTextDocument(openPath).then(doc => {
-				vscode.window.showTextDocument(doc);
-			}); */
-
 		} catch (e) {
 			vscode.window.showErrorMessage('Something went wrong reading custom metadata records');
 		}
@@ -218,6 +217,9 @@ export function activate(context: vscode.ExtensionContext) {
 				readRecords.push(readRecord);
 			}
 
+			const fieldTypes: {[field: string]: string} = {};
+
+			// Update files
 			for (const readRecord of readRecords) {
 				if (readRecord._fileName !== undefined && readRecord._fileName !== null && mdtRecordFileNamesRead.includes(readRecord._fileName)) {
 					const filePath = path.join(customMetadataPath, readRecord._fileName);
@@ -234,6 +236,9 @@ export function activate(context: vscode.ExtensionContext) {
 									fieldName = valuesElement.elements[0].text;
 								} else if (valuesElement.name === 'value' && fieldName !== undefined && readRecord[fieldName] !== undefined) {
 									const readValue = readRecord[fieldName];
+									if (valuesElement.attributes['xsi:type'] !== undefined) {
+										fieldTypes[fieldName] = valuesElement.attributes['xsi:type'];
+									}
 									if (readValue === null) {
 										delete valuesElement.elements;
 										delete valuesElement.attributes['xsi:type'];
@@ -255,6 +260,87 @@ export function activate(context: vscode.ExtensionContext) {
 				}
 			}
 
+			// Create files
+			for (const readRecord of readRecords) {
+				if (readRecord._fileName !== undefined && readRecord._fileName !== null && !mdtRecordFileNamesRead.includes(readRecord._fileName)) {
+					const valuesElements: any[] = [];
+					for (let [key, value] of Object.entries(readRecord)) {
+						if (!key.startsWith('_') && !standardColumns.includes(key)) {
+							const valueElement: any = {
+								type: 'element',
+								name: 'value',
+							};
+							if (value === null) {
+								valueElement.attributes = {
+									'xsi:nil': 'true'
+								};
+							} else {
+								valueElement.attributes = {
+									'xsi:type': (fieldTypes[key] !== undefined ? fieldTypes[key] : 'xsd:string')
+								};
+								valueElement.elements = [{
+									type: 'text',
+									text: value
+								}];
+							}
+
+							valuesElements.push({
+								type: "element",
+								name: "values",
+								elements: [
+									{
+										type: "element",
+										name: "field",
+										elements: [
+											{
+												type: "text",
+												text: key
+											}
+										]
+									},
+									valueElement
+								]
+							});
+						}
+					}
+
+					const fileXMLObj = {
+						declaration: {
+							attributes: {
+								version: "1.0",
+								encoding: "utf-8"
+							}
+						},
+						elements: [
+							{
+								type: "element",
+								name: "CustomMetadata",
+								attributes: {
+									xmlns: "http://soap.sforce.com/2006/04/metadata",
+									"xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+									"xmlns:xsd": "http://www.w3.org/2001/XMLSchema"
+								},
+								elements: [
+									{
+										type: "element",
+										name: "label",
+										elements: [
+											{
+												type: "text",
+												text: readRecord.label
+											}
+										]
+									},
+									...valuesElements
+								]
+							}
+						]
+					};
+					const newXML = js2xml(fileXMLObj, { compact: false, spaces: 4 });
+					fs.writeFileSync(path.join(customMetadataPath, readRecord._fileName), newXML);
+				}
+			}
+			vscode.window.showInformationMessage('Metadata record files have been created/updated');
 		} catch (e) {
 			vscode.window.showErrorMessage('Something went wrong updating metadata files');
 		}
