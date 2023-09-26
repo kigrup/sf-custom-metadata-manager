@@ -15,7 +15,7 @@
     "salesforce", "custom metadata", "metadata", "records", "mdt"
   ],
   "preview": true,
-  "icon": "",
+  "icon": "images/icon.png",
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
