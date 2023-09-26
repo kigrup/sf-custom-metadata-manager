@@ -1,14 +1,21 @@
 {
   "name": "sf-custom-metadata-manager",
   "displayName": "Custom Metadata Manager - Salesforce",
-  "description": "",
-  "version": "0.0.1",
+  "description": "Provides Custom Metadata records management features for Salesforce",
+  "version": "1.0.0",
+  "publisher": "raulplesa",
+  "license": "Apache-2.0",
   "engines": {
     "vscode": "^1.82.0"
   },
   "categories": [
-    "Other"
+    "Formatters", "Other"
   ],
+  "keywords": [
+    "salesforce", "custom metadata", "metadata", "records", "mdt"
+  ],
+  "preview": true,
+  "icon": "",
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
