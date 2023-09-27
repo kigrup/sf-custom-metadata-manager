@@ -245,7 +245,7 @@ export function activate(context: vscode.ExtensionContext) {
 										valuesElement.attributes['xsi:nil'] = 'true';
 									} else {
 										delete valuesElement.attributes['xsi:nil'];
-										valuesElement.attributes['xsi:type'] = 'xsd:string';
+										valuesElement.attributes['xsi:type'] = (fieldTypes[fieldName] !== undefined ? fieldTypes[fieldName] : 'xsd:string');
 										valuesElement.elements = [{
 											type: 'text',
 											text: readValue
