@@ -2,7 +2,7 @@
   "name": "sf-custom-metadata-manager",
   "displayName": "Custom Metadata Manager - Salesforce",
   "description": "Provides Custom Metadata records management features for Salesforce",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "raulplesa",
   "license": "Apache-2.0",
   "engines": {
