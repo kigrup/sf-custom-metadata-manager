@@ -8,27 +8,27 @@ SFDX is necessary to be able to retrieve and deploy custom metadata records, tak
 
 First of all, it's important to know how SFDX handles custom metadata records. Once you've authorized an organization, using the Org Browser you can download all the custom metadata.
 
-![howto1](https://github.com/kigrup/sf-custom-metadata-manager/assets/41707166/17a2ceac-a9f6-4d55-89df-f9692697b294)
+![howto1](https://github.com/kigrup/sf-custom-metadata-manager/assets/41707166/b76515d6-88a6-4a86-8e88-522c5b950cac)
 
 To update or work with current records, make sure the files were correctly downloaded to the "customMetadata" folder.
 
-![howto2](https://github.com/kigrup/sf-custom-metadata-manager/assets/41707166/be7ced5d-714e-4e6b-a3ad-581f6d2d47bb)
+![howto2](https://github.com/kigrup/sf-custom-metadata-manager/assets/41707166/b2225d7f-0115-4ff1-9c95-1433a678d650)
 
 A good way to start using the extension is to run the "read all into CSV" command.
 
-![howto3](https://github.com/kigrup/sf-custom-metadata-manager/assets/41707166/71b9e11b-5f56-479c-a0a7-39dc7cff0d84)
+![howto3](https://github.com/kigrup/sf-custom-metadata-manager/assets/41707166/af51f3a6-3439-406e-8cb3-3811f2a9a791)
 
 With this file as a template, you can modify the existing lines or add new ones to create records. When you're done you can run the "update from open CSV" command. This works as an "upsert" on the local files.
 
-![howto4](https://github.com/kigrup/sf-custom-metadata-manager/assets/41707166/8b642412-f15b-400e-847c-6785c36f605e)
+![howto4](https://github.com/kigrup/sf-custom-metadata-manager/assets/41707166/c5376d58-3325-49af-a7f7-ab70c2f6e915)
 
 Now you can deploy all the files you want at the same time to apply the changes in Salesforce. 
 
-![howto5](https://github.com/kigrup/sf-custom-metadata-manager/assets/41707166/a7102566-5126-4886-82af-94701f1c4258)
+![howto5](https://github.com/kigrup/sf-custom-metadata-manager/assets/41707166/166df020-6e93-4a4c-93c9-0c7348209c8c)
 
 Pay attention to the output terminal to make sure there was no issue with the deployment.
 
-![howto6](https://github.com/kigrup/sf-custom-metadata-manager/assets/41707166/ae332e52-5244-409d-84fa-6d7189ddd43f)
+![howto6](https://github.com/kigrup/sf-custom-metadata-manager/assets/41707166/86c65ae4-d241-4f54-a25d-ae7b000683a7)
 
 ## Limitations
 
